@@ -43,8 +43,8 @@ Future main() async {
       404);
   });
 
-  test("/questions/random returns a random question", () async {
-    var request = app.client.request("/questions/random");
+  test("/questions?random=true returns a random question", () async {
+    var request = app.client.request("/questions?random=true");
 
     expectResponse(
       await request.get(),
