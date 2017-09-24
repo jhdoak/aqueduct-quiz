@@ -1,4 +1,5 @@
 import '../aqueduct_quiz.dart';
+import 'dart:math';
 
 class QuestionController extends HTTPController {
   var questions = [
@@ -19,5 +20,14 @@ class QuestionController extends HTTPController {
     return (index < 0 || index >= questions.length)
       ? new Response.notFound()
       : new Response.ok(questions[index]);
+  }
+
+  @httpGet
+  Future<Response> getRandomQuestion({@HTTPQuery("random") String random}) async {
+    if (random != null && random == "true") {
+      var randomIndex = new Random().nextInt(questions.length);
+      return new Response.ok(questions[randomIndex]);
+    }
+    return new Response.ok(questions);
   }
 }
