@@ -21,6 +21,8 @@ class AqueductQuizSink extends RequestSink {
   /// Configuration of database connections, [HTTPCodecRepository] and other per-isolate resources should be done in this constructor.
   AqueductQuizSink(ApplicationConfiguration appConfig) : super(appConfig) {
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
+
+    var dataModel = new ManagedDataModel.fromCurrentMirrorSystem();
   }
 
   /// All routes must be configured in this method.
