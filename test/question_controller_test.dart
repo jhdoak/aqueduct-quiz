@@ -17,6 +17,30 @@ Future main() async {
     expectResponse(
       await request.get(),
       200,
-      body: everyElement(endsWith("?")));
+      body: allOf([
+        hasLength(greaterThan(0)),
+        everyElement(endsWith("?"))
+      ]));
   });
+
+  test("/questions/index returns a single question", () async {
+    var request = app.client.request("/questions/1");
+
+    expectResponse(
+      await request.get(),
+      200,
+      body: allOf([
+        hasLength(greaterThan(0)),
+        endsWith("?")
+      ]));
+  });
+
+  test("/questions/index out of range returns 404", () async {
+    var request = app.client.request("/questions/100");
+
+    expectResponse(
+      await request.get(),
+      404);
+  });
+
 }
