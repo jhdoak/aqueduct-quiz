@@ -1,4 +1,5 @@
 import 'aqueduct_quiz.dart';
+import 'controller/question_controller.dart';
 
 /// This class handles setting up this application.
 ///
@@ -30,11 +31,10 @@ class AqueductQuizSink extends RequestSink {
   void setupRouter(Router router) {
     // Prefer to use `pipe` and `generate` instead of `listen`.
     // See: https://aqueduct.io/docs/http/request_controller/
+    
     router
-      .route("/example")
-      .listen((request) async {
-        return new Response.ok({"key": "value"});
-      });
+      .route("/questions")
+      .generate(() => new QuestionController());
   }
 
   /// Final initialization method for this instance.
