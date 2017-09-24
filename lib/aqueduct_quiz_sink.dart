@@ -33,7 +33,7 @@ class AqueductQuizSink extends RequestSink {
     // See: https://aqueduct.io/docs/http/request_controller/
     
     router
-      .route("/questions")
+      .route("/questions/[:index]")
       .generate(() => new QuestionController());
   }
 

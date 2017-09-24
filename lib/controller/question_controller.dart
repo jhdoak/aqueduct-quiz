@@ -13,4 +13,11 @@ class QuestionController extends HTTPController {
   Future<Response> getAllQuestions() async {
     return new Response.ok(questions);
   }
+
+  @httpGet
+  Future<Response> getQuestionAtIndex(@HTTPPath("index") int index) async {
+    return (index < 0 || index >= questions.length)
+      ? new Response.notFound()
+      : new Response.ok(questions[index]);
+  }
 }
