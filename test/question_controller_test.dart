@@ -43,4 +43,16 @@ Future main() async {
       404);
   });
 
+  test("/questions/random returns a random question", () async {
+    var request = app.client.request("/questions/random");
+
+    expectResponse(
+      await request.get(),
+      200,
+      body: allOf([
+        hasLength(greaterThan(0)),
+        endsWith("?")
+      ]));
+  });
+
 }
