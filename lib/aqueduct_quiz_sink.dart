@@ -27,7 +27,7 @@ class AqueductQuizSink extends RequestSink {
     var persistentStore = new PostgreSQLPersistentStore.fromConnectionInfo(
         "dart", "dart", "localhost", 5432, "dart_test");
 
-    context = new ManagedContext(dataModel, persistentStore)
+    context = new ManagedContext(dataModel, persistentStore);
   }
 
   ManagedContext context;

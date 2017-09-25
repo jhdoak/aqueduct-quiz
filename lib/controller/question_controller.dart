@@ -1,33 +1,41 @@
 import '../aqueduct_quiz.dart';
 import 'dart:math';
 
-class QuestionController extends HTTPController {
-  var questions = [
-    "What is your name?",
-    "What is your quest?",
-    "What is your favorite color?",
-    "What is the capital of Assyria?",
-    "What is the airspeed velocity of an unladen swallow?"
-  ];
+import '../model/question.dart';
 
+class QuestionController extends HTTPController {
   @httpGet
   Future<Response> getAllQuestions() async {
-    return new Response.ok(questions);
+    var questionQuery = new Query<Question>();
+    var databaseQuestions = await questionQuery.fetch();
+
+    return new Response.ok(databaseQuestions);
   }
 
   @httpGet
   Future<Response> getQuestionAtIndex(@HTTPPath("index") int index) async {
-    return (index < 0 || index >= questions.length)
-      ? new Response.notFound()
-      : new Response.ok(questions[index]);
+    var questionQuery = new Query<Question>()
+      ..where.index = whereEqualTo(index);
+
+    var question = await questionQuery.fetchOne();
+
+    return question == null
+        ? new Response.notFound()
+        : new Response.ok(question);
   }
 
   @httpGet
   Future<Response> getRandomQuestion({@HTTPQuery("random") String random}) async {
-    if (random != null && random == "true") {
-      var randomIndex = new Random().nextInt(questions.length);
-      return new Response.ok(questions[randomIndex]);
-    }
-    return new Response.ok(questions);
+    var questionQuery = new Query<Question>();
+    var questions = await questionQuery.fetch();
+
+    return (random != null && random == "true")
+        ? new Response.ok(getRandomQuestionOfList(questions))
+        : new Response.ok(questions);
+  }
+
+  Question getRandomQuestionOfList(questionList) {
+    var randomIndex = new Random().nextInt(questionList.length);
+    return questionList[randomIndex];
   }
 }
