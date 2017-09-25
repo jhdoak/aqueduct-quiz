@@ -23,7 +23,14 @@ class AqueductQuizSink extends RequestSink {
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
     var dataModel = new ManagedDataModel.fromCurrentMirrorSystem();
+
+    var persistentStore = new PostgreSQLPersistentStore.fromConnectionInfo(
+        "dart", "dart", "localhost", 5432, "dart_test");
+
+    context = new ManagedContext(dataModel, persistentStore)
   }
+
+  ManagedContext context;
 
   /// All routes must be configured in this method.
   ///
