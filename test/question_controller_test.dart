@@ -87,4 +87,16 @@ Future main() async {
         ]));
   });
 
+  test("/questions returns list of questions filtered by contains", () async {
+    var request = app.client.request("/questions?contains=your");
+
+    expectResponse(
+        await request.get(),
+        200,
+        body: allOf([
+          hasLength(greaterThan(0)),
+          everyElement(containsPair("description", contains("your")))
+        ]));
+  });
+
 }
