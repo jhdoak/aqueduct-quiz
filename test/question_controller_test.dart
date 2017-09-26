@@ -39,7 +39,7 @@ Future main() async {
       200,
       body: allOf([
         hasLength(greaterThan(0)),
-        everyElement(endsWith("?"))
+        everyElement(containsPair("description", endsWith("?")))
       ]));
   });
 
@@ -51,7 +51,7 @@ Future main() async {
       200,
       body: allOf([
         hasLength(greaterThan(0)),
-        endsWith("?")
+        containsPair("description", endsWith("?"))
       ]));
   });
 
@@ -63,7 +63,7 @@ Future main() async {
       404);
   });
 
-  test("/questions?random=true returns a random question", () async {
+  test("/questions?random=true returns a single question", () async {
     var request = app.client.request("/questions?random=true");
 
     expectResponse(
@@ -71,7 +71,7 @@ Future main() async {
       200,
       body: allOf([
         hasLength(greaterThan(0)),
-        endsWith("?")
+        containsPair("description", endsWith("?"))
       ]));
   });
 
