@@ -30,6 +30,8 @@ class TestApplication {
 
     await application.start(runOnMainIsolate: true);
 
+    await createDatabaseSchema(sink.context);
+
     client = new TestClient(application);
   }
 
@@ -39,5 +41,16 @@ class TestApplication {
   /// resources.
   Future stop() async {
     await application?.stop();
+  }
+
+  static Future createDatabaseSchema(ManagedContext context) async {
+    var builder = new SchemaBuilder.toSchema(
+        context.persistentStore,
+        new Schema.fromDataModel(context.dataModel),
+        isTemporary: true);
+
+    for (var cmd in builder.commands) {
+      await context.persistentStore.execute(cmd);
+    }
   }
 }

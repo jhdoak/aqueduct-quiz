@@ -1,10 +1,30 @@
 import 'harness/app.dart';
+import 'package:aqueduct_quiz/model/question.dart';
 
 Future main() async {
   TestApplication app = new TestApplication();
 
   setUpAll(() async {
     await app.start();
+
+    var questions = [
+      new Question()
+        ..description = "What is your name?",
+      new Question()
+        ..description = "What is your quest?",
+      new Question()
+        ..description = "What is your favorite color?",
+      new Question()
+        ..description = "What is the capital of Assyria?",
+      new Question()
+        ..description = "What is the airspeed velocity of an unladen swallow?",
+    ];
+
+    await Future.forEach(questions, (q) {
+      var query = new Query<Question>()
+          ..values = q;
+      return query.insert();
+    });
   });
 
   tearDownAll(() async {
