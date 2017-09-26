@@ -75,4 +75,16 @@ Future main() async {
       ]));
   });
 
+  test("/questions?random=false returns list of questions", () async {
+    var request = app.client.request("/questions?random=false");
+
+    expectResponse(
+        await request.get(),
+        200,
+        body: allOf([
+          hasLength(greaterThan(0)),
+          everyElement(containsPair("description", endsWith("?")))
+        ]));
+  });
+
 }
